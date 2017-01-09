@@ -1,5 +1,8 @@
-﻿using UnityEngine;
-//using System;
+﻿//Credit to Catlike Coding for the map generation tutorial,
+//http://catlikecoding.com/unity/tutorials/maze/
+//mine is slightly edited for my game to work but the tut was a huge help
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
