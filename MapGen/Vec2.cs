@@ -4,6 +4,7 @@ using System.Collections;
 [System.Serializable]
 public struct Vec2
 {
+    //Simple Vector2
     public int x, y;
     public Vec2(int x, int y)
     {
@@ -11,6 +12,7 @@ public struct Vec2
         this.y = y;
     }
 
+    //Simple operation to add 2 2D vectors
     public static Vec2 operator +(Vec2 a, Vec2 b)
     {
         a.x += b.x;

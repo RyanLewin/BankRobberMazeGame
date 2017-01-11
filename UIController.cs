@@ -14,17 +14,18 @@ public class UIController : MonoBehaviour {
     Text timeText;
     Text levelText;
 
-    int level = 1;
-    int moves;
-    Time time;
+    int level = 1; //Current level
+    int moves; //No of moves
+    Time time; //Time taken in current game
 
     GameManager gameManager;
 
-    public string finTime;
-    public string finMoves;
+    public string finTime; //Final time
+    public string finMoves; //Final moves no
 
     void Start ()
     {
+        //Gets all the correct transforms / components
         UI = canvas.GetChild(1);
         gameOver = canvas.GetChild(0);
         gun = UI.GetChild(1);
@@ -39,6 +40,7 @@ public class UIController : MonoBehaviour {
 
     void Update()
     {
+        //Update weapon UI
         if (Input.GetKeyUp(KeyCode.Alpha1) || Input.GetKeyUp(KeyCode.Keypad1))
         {
             knife.gameObject.SetActive(false);
@@ -58,6 +60,7 @@ public class UIController : MonoBehaviour {
             gun.gameObject.SetActive(false);
         }
 
+        //If game is over, point the camera up and display moves time and level
         if (gameManager.GameOverBool)
         {
             float angle = Mathf.LerpAngle(Camera.main.transform.eulerAngles.x, -Camera.main.transform.eulerAngles.x, Time.deltaTime);
@@ -68,17 +71,20 @@ public class UIController : MonoBehaviour {
         }
         else
         {
+            //update current time text
             timeText.text = "Time: " + Time.time.ToString("#.##");
         }
     }
 
     public void Moves (int moves)
     {
+        //update text, called every player move
         movesText.text = "Moves: " + moves;
     }
 
     public void WeaponUI (string weapon, int a = 3)
     {
+        //Make used up drills more transparent than those not yet used
         if (weapon == drills.name)
         {
             for (int i = a; i >= 0; i--)
@@ -96,13 +102,16 @@ public class UIController : MonoBehaviour {
         }
     }
 
+    //Reset all UI if game is restarted
     public void ResetUI ()
     {
         gameOver.gameObject.SetActive(false);
+        //reset final moves and time
         finMoves = "";
         finTime = "";
         UI.gameObject.SetActive(true);
 
+        //make all drills opaque again
         foreach (Transform drill in drills)
         {
             Image image = drill.GetComponent<Image>();
@@ -112,16 +121,19 @@ public class UIController : MonoBehaviour {
         }
     }
 
+    //Update the level number, called every time Game is started
     public void UpdateLevel (int _level)
     {
         level = _level;
         levelText.text = "Level: " + level;
     }
 
+    //Swap UI to the gameover rather than game running
     public void GameOver ()
     {
         UI.gameObject.SetActive(false);
         gameOver.gameObject.SetActive(true);
+        //set final moves to current moves text and final time to time since game started
         finMoves = movesText.text;
         finTime = Time.time.ToString("#.##");
     }

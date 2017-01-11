@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//All the directions
 public enum MapDirection
 {
     North,
@@ -12,8 +13,8 @@ public enum MapDirection
 public static class MapDirections {
 
     public const int count = 4;
-
-
+    
+    //2D vectors of dir
     private static Vec2[] vectors =
     {
         new Vec2(0,1),
@@ -22,6 +23,7 @@ public static class MapDirections {
         new Vec2(-1,0)
     };
 
+    //3D vectors of dir
     private static Vector3[] vectors3 =
     {
         new Vector3(0,0,1f),
@@ -30,14 +32,16 @@ public static class MapDirections {
         new Vector3(-1f,0,0)
     };
     
+    //Opposite of each vector
     private static MapDirection[] opposites =
     {
-    MapDirection.South,
-    MapDirection.West,
-    MapDirection.North,
-    MapDirection.East
+        MapDirection.South,
+        MapDirection.West,
+        MapDirection.North,
+        MapDirection.East
     };
 
+    //the rotations for each direction
     private static Quaternion[] rotations =
     {
         Quaternion.identity,

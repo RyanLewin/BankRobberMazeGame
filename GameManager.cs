@@ -4,15 +4,15 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 
     Map map;
-    Vec2 size;
     UIController uiController;
-
     PlayerController player;
-    public int level = 1;
-    public int moves;
+
+    Vec2 size; //Size of map
+    public int level = 1; //level that the player is on
+    public int moves; //No of moves the player has done
     
-    public bool gameOverBool = false;
-    public bool won = false;
+    public bool gameOverBool = false; //Has the player been killed or quit?
+    public bool won = false; //Has the player got the finish?
 
     void Start()
     {
@@ -23,17 +23,22 @@ public class GameManager : MonoBehaviour {
 
     void Update()
     {
+        //Just for testing, to reset the map
         if (Input.GetKeyDown(KeyCode.Return))
             RestartGame();
     }
 
+    //testing for mobile controls
     public void MobileMove (string direction)
     {
         player.MobileDirection(direction);
     }
 
+    //Begin the game
     void BeginGame()
     {
+        // If the player won the last level, increase the size of the map by 10 each way,
+        // increase the level by 1 and update the UI for level
         if (won)
         {
             size = map.GetSize;
@@ -44,10 +49,12 @@ public class GameManager : MonoBehaviour {
         }
 
         gameOverBool = false;
+        //Call for the map to generate
         map.Generate();
         player = map.GetPlayer;
     }
 
+    //Reset the UI and the map, then begin the game again
     public void RestartGame()
     {
         uiController.ResetUI();
@@ -55,6 +62,7 @@ public class GameManager : MonoBehaviour {
         BeginGame();
     }
 
+    //Quit the application
     public void Quit()
     {
         Application.Quit();
@@ -63,6 +71,7 @@ public class GameManager : MonoBehaviour {
     public bool GameOverBool
     {
         get { return gameOverBool; }
+        //set gameOverBool and if set to true, reset the level to 1 and moves to 0
         set
         {
             gameOverBool = value;

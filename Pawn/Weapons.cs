@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//All the weapons
 public enum Weapon
 {
     Gun,

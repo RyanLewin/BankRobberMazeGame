@@ -3,38 +3,41 @@ using System.Collections;
 
 public class Pawn : MonoBehaviour {
 
-    protected Cell[,] cells;
+    protected Cell[,] cells; //Multi-Dimensional array of all cells
 
     [SerializeField]
-    protected Cell currCell;
-    protected Cell otherCell;
+    protected Cell currCell; //Current cell
+    protected Cell otherCell; //neighbor cell
 
-    protected Vec2 otherPos;
+    protected Vec2 otherPos; //Positon of other cell
     [SerializeField]
-    protected Vec2 pos;
+    protected Vec2 pos; //current position
 
     [SerializeField]
-    protected MapDirection dir;
+    protected MapDirection dir; //direction currently facing, ie. North, East, South, West
 
     protected Map map;
     protected UIController uiController;
     protected GameManager gameManager;
-    protected bool stop = false;
+    protected bool stop = false; //Should the enemy be paused
 
 
     void Start()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
 
+        //set the pos to the current cell's coords then move them to the right place
         pos = currCell.coordinates;
         transform.position = cells[pos.x, pos.y].transform.position;
         transform.localPosition = new Vector3(transform.position.x, transform.lossyScale.y, transform.position.z);
         map = GameObject.FindGameObjectWithTag("GameController").GetComponent<Map>();
         uiController = GameObject.FindGameObjectWithTag("GameController").GetComponent<UIController>();
+        //Set parent to the current cell
         transform.parent = currCell.transform;
         dir = MapDirection.North;
     }
 
+    //Check if there is a wall in front of the pawn
     protected bool CheckForWall()
     {
         foreach (Transform t in currCell.transform)
@@ -51,6 +54,7 @@ public class Pawn : MonoBehaviour {
         return false;
     }
 
+    //Check that the pawn won't be going outside the boundaries of the map
     protected bool InRange()
     {
         if (pos.y == 0 && dir == MapDirection.South)
@@ -65,6 +69,7 @@ public class Pawn : MonoBehaviour {
             return true;
     }
 
+    //Check whether the pawn is able to move
     protected bool Move()
     {
         do
@@ -78,6 +83,8 @@ public class Pawn : MonoBehaviour {
         otherPos = currCell.coordinates + dir.ToIntVec2();
         otherCell = cells[otherPos.x, otherPos.y];
 
+        //Check otherCell to see if it contains an enemy or player, if the enemy
+        //sees the player in the other cell they will stop to "take a shot"
         for (int i = 0; i < otherCell.transform.childCount; i++)
         {
             string tag = otherCell.transform.GetChild(i).tag;
@@ -90,6 +97,7 @@ public class Pawn : MonoBehaviour {
             }
         }
 
+        //move position of pawn and update parentz
         transform.position += dir.ToVec3();
         transform.parent = otherCell.transform;
         return true;
